@@ -70,4 +70,7 @@ patterns:
 
 repository:
   statement:
+    patterns:
+      - include: '#definition'
+  definition:
     patterns: []
