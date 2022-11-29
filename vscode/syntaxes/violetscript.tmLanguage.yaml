@@ -9,54 +9,52 @@ variables:
   id: '{{idStart}}{{idPart}}*'
   idStart: '[\p{L}\p{Nl}$_]'
   idPart: '[\p{L}\p{Nd}\p{Nl}\p{Mc}\p{Mn}\p{Pc}$_]'
-  idBreak: '(?!{{id_part}})'
-  dollarId: '\${{id_start}}*{{id_break}}'
+  idBreak: '(?!{{idPart}})'
 
   reservedWord: >-
     (?x) (
-      a(s|wait)|
-      break|
-      c(ase|atch|lass|onst|ontinue)|
-      d(efault|elete|o)|
-      e(lse|xtends)|
-      f(alse|inally|or|unction)|
-      i(
-        f|
-        mplements
-        mport|
-        nterface|
-        nternal|
-        n|
-        s
-      )|
-      n(ew|ull)|
-      p(
-        ackage|
-        rivate|
-        rotected|
-        ublic
-      )|
-      return|
-      s(
-        uper|
-        witch
-      )|
-      t(
-        his|
-        hrow(s?)|
-        rue|
-        ry|
-        ypeof
-      )|
-      use|
-      var|
-      void|
-      w(
-        here|
-        hile|
-        ith
-      )|
-      yield
+        a(s|wait)
+      | break
+      | c(ase|atch|lass|onst|ontinue)
+      | d(efault|elete|o)
+      | e(lse|xtends)
+      | f(alse|inally|or|unction)
+      | i(
+          f
+        | mplements
+        | mport
+        | nterface
+        | nternal
+        | n
+        | s
+        )
+      | n(ew|ull)
+      | p(
+          ackage
+        | rivate
+        | rotected
+        | ublic
+        )
+      | return
+      | s(
+          uper
+        | witch
+        )
+      | t(
+          his|
+        | hrow(s?)|
+        | rue
+        | ry
+        | ypeof
+        )
+      | use
+      | v(ar|oid)
+      | w(
+          here
+        | hile
+        | ith
+        )
+      | yield
     ) {{idBreak}}
 
   decimalLiteral: >-
@@ -66,8 +64,10 @@ variables:
       ) ([Ee][+-]?\d+(_\d+)*)?
 
 patterns:
-  - include: '#foo'
+  - include: '#statement'
+  - match: '\}'
+    name: invalid.violet
 
 repository:
-  foo:
+  statement:
     patterns: []
