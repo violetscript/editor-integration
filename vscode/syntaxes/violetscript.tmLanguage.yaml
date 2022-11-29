@@ -1,0 +1,15 @@
+# [PackageDev] target_format: plist, ext: tmLanguage
+---
+$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+name: VioletScript
+scopeName: source.violet
+
+variables:
+  someVar: 'xxx'
+
+patterns:
+  - include: '#foo'
+
+repository:
+  foo:
+    patterns: []
