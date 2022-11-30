@@ -3,6 +3,7 @@
 $schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
 name: VioletScript
 scopeName: source.violet
+fileTypes: ['violet']
 
 variables:
   lineTerminator: '[\n\r\x{2028}\x{2029}]'
@@ -64,13 +65,51 @@ variables:
       ) ([Ee][+-]?\d+(_\d+)*)?
 
 patterns:
-  - include: '#statement'
+  - include: '#statements'
   - match: '\}'
     name: invalid.violet
 
 repository:
-  statement:
+  statements:
     patterns:
-      - include: '#definition'
-  definition:
+      - include: '#definitions'
+      - include: '#expressions'
+  definitions:
     patterns: []
+  expressions:
+    patterns:
+      - match: '\b(embed)(?=\s*[\\"''])'
+        captures: { 1 = { name = 'keyword.other.violet' } }
+      - match: '\b(await|yield|super|default)\b'
+        captures: { 1 = { name = 'keyword.operator.violet' } }
+      - match: '\b(import)\.(meta)\b'
+        captures:
+          1 = { name = 'keyword.other.violet' }
+          2 = { name = 'keyword.other.violet' }
+      - begin: '(->)[\s\t]*\{'
+        end: '\}'
+        captures: { 1 = { name = 'keyword.operator.violet' } }
+        patterns:
+          - include: '#statements'
+      - begin: '(?<=->[\s\t\n\r]*)(\{)'
+        end: '\}'
+        patterns:
+          - include: '#statements'
+      - match: '->'
+        name: keyword.operator.violet
+  comments:
+    patterns:
+      - include: '#multilineComment'
+      - include: 'xmlComment'
+      - match: '//.*'
+        name: comment.line.double-slash.violet
+  multilineComment
+    begin: '/\*'
+    end: '\*/'
+    name: comment.block.violet
+    patterns:
+      - include: '#multilineComment'
+  xmlComment:
+    begin: '<!--'
+    end: '-->'
+    name: comment.block.violet
