@@ -7,7 +7,7 @@ fileTypes: ['violet']
 
 variables:
   lineTerminator: '[\n\r\x{2028}\x{2029}]'
-  id: '{{idStart}}{{idPart}}*'
+  id: '{{idStart}}{{idPart}}*|\#{{idPart}}+'
   idStart: '[\p{L}\p{Nl}$_]'
   idPart: '[\p{L}\p{Nd}\p{Nl}\p{Mc}\p{Mn}\p{Pc}$_]'
   idBreak: '(?!{{idPart}})'
@@ -97,13 +97,15 @@ repository:
           - include: '#statements'
       - match: '->'
         name: keyword.operator.violet
+      - begin: '\b(function)\b({{id}})?\b'
+        end: ''
   comments:
     patterns:
       - include: '#multilineComment'
       - include: 'xmlComment'
       - match: '//.*'
         name: comment.line.double-slash.violet
-  multilineComment
+  multilineComment:
     begin: '/\*'
     end: '\*/'
     name: comment.block.violet
