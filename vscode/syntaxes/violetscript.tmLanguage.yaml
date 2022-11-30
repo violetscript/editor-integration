@@ -78,11 +78,11 @@ repository:
     patterns: []
   expressions:
     patterns:
-      - match: '\b(embed)(?=\s*[\\"''])'
+      - match: '(?<!\#)\b(embed)(?=\s*[\\"''])'
         captures: { 1 = { name = 'keyword.other.violet' } }
-      - match: '\b(await|yield|super|default)\b'
+      - match: '(?<!\#)\b(await|yield|super|default)\b'
         captures: { 1 = { name = 'keyword.operator.violet' } }
-      - match: '\b(import)\.(meta)\b'
+      - match: '(?<!\#)\b(import)\.(meta)\b'
         captures:
           1 = { name = 'keyword.other.violet' }
           2 = { name = 'keyword.other.violet' }
@@ -97,8 +97,15 @@ repository:
           - include: '#statements'
       - match: '->'
         name: keyword.operator.violet
-      - begin: '\b(function)\b({{id}})?\b'
-        end: ''
+      - begin: '(?<!\#)\b(function)[\s\t]+({{id}})?'
+        end: '(?!\{)(?<!\bfunction[\s\t\n\r]*\())'
+        beginCaptures: { 1 = { name = 'keyword.other.violet' } }
+        patterns: []
+      - begin: '(?<!\#)\b(throws)\b'
+        end: '(?<\bthrows\b)(?!{{typeExpressionStart}})'
+        beginCaptures: { 1 = { name = 'keyword.other.violet' } }
+        patterns:
+          - include: '#typeExpressions'
   comments:
     patterns:
       - include: '#multilineComment'
